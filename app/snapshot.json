@@ -1,0 +1,176 @@
+{
+  "show": {
+    "sensitivity": 0.65,
+    "table": 0.6,
+    "cat": 0.7,
+    "steam": 0.6,
+    "bubbles": 0.6,
+    "glow": 0.6,
+    "color": 0.35,
+    "puddle": 0.6,
+    "sign": 0.5,
+    "rain": 0.6,
+    "wind": 0.4,
+    "mist": 0.5
+  },
+  "signal": {
+    "bass": 0,
+    "mid": 0,
+    "treble": 0,
+    "beat": 0
+  },
+  "sync": 0,
+  "lighting": {
+    "strength": 0.5,
+    "fill": 0.25,
+    "reach": 0.5,
+    "softness": 0.5,
+    "ambient": 0.5,
+    "snap": 0.6
+  },
+  "band": {},
+  "tracks": [],
+  "lightingControls": [
+    {
+      "key": "strength",
+      "label": "Strength",
+      "note": "How strongly the lamps' changing light shows on what it lights",
+      "value": 0.5,
+      "readout": "50%"
+    },
+    {
+      "key": "fill",
+      "label": "Fill",
+      "note": "Extra lamplight beyond what is baked into the scene",
+      "value": 0.25,
+      "readout": "25%"
+    },
+    {
+      "key": "reach",
+      "label": "Reach",
+      "note": "How far each lamp's light carries",
+      "value": 0.5,
+      "readout": "50%"
+    },
+    {
+      "key": "softness",
+      "label": "Softness",
+      "note": "How far light wraps round surfaces turned away",
+      "value": 0.5,
+      "readout": "50%"
+    },
+    {
+      "key": "ambient",
+      "label": "Ambient",
+      "note": "The level of everything the lamps do not light",
+      "value": 0.5,
+      "readout": "50%"
+    },
+    {
+      "key": "snap",
+      "label": "Pixel snap",
+      "note": "Smooth dithered colour, or only the scene's own palette",
+      "value": 0.6,
+      "readout": "60%"
+    }
+  ],
+  "syncReadout": "0 ms",
+  "sections": [
+    {
+      "name": "Music",
+      "channels": [
+        {
+          "key": "sensitivity",
+          "label": "Sensitivity",
+          "note": "All input bands",
+          "value": 0.65,
+          "readout": "65%"
+        },
+        {
+          "key": "table",
+          "label": "Table",
+          "note": "Kick: hop and bounce · bass and hats: rattle",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "cat",
+          "label": "Cat",
+          "note": "Snare: nods, chin up just before · bar: tail",
+          "value": 0.7,
+          "readout": "70%"
+        },
+        {
+          "key": "steam",
+          "label": "Steam",
+          "note": "Section energy · bass and melody swell it",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "bubbles",
+          "label": "Bubbles",
+          "note": "Hats fizz · kick and bass boil",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "glow",
+          "label": "Lamps",
+          "note": "Kick: flash, haze ducks · chords: glow · drop: flare",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "color",
+          "label": "Color",
+          "note": "One hue per section, from its chord · each bar leans it",
+          "value": 0.35,
+          "readout": "35%"
+        },
+        {
+          "key": "puddle",
+          "label": "Puddles",
+          "note": "Kick and bass notes: rings · held bass: standing waves",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "sign",
+          "label": "Sign",
+          "note": "Downbeats swing it · crashes blink its neon",
+          "value": 0.5,
+          "readout": "50%"
+        }
+      ]
+    },
+    {
+      "name": "Weather",
+      "channels": [
+        {
+          "key": "rain",
+          "label": "Rain",
+          "note": "Dry to downpour",
+          "value": 0.6,
+          "readout": "60%"
+        },
+        {
+          "key": "wind",
+          "label": "Wind",
+          "note": "How much what hangs swings",
+          "value": 0.4,
+          "readout": "40%"
+        },
+        {
+          "key": "mist",
+          "label": "Mist",
+          "note": "Haze around the lamps",
+          "value": 0.5,
+          "readout": "50%"
+        }
+      ]
+    }
+  ],
+  "$refs": {},
+  "$testData": false
+}

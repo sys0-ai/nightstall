@@ -1,0 +1,136 @@
+<style>
+  html, body { margin:0; overflow:hidden; }
+  .stall { height:100dvh; display:grid; grid-template-columns:minmax(0,1fr) clamp(216px,26%,300px); grid-template-rows:minmax(0,1fr) auto; overflow:hidden; background:var(--color-surface); color:var(--color-text); }
+  .street { position:relative; min-width:0; min-height:0; overflow:hidden; display:grid; background:var(--color-canvas); }
+  .street canvas { display:block; width:100%; height:100%; min-height:0; min-width:0; touch-action:none; cursor:grab; image-rendering:pixelated; }
+  .street canvas.navigating { cursor:grabbing; }
+  .street canvas:focus-visible { outline:2px solid var(--color-text); outline-offset:-3px; }
+  .street .loading, .street .scene-error { position:absolute; inset:0; margin:auto; width:fit-content; height:fit-content; max-width:32ch; padding:1em; background:var(--color-surface); color:var(--color-text); }
+  .controls { box-sizing:border-box; min-width:0; min-height:0; display:flex; flex-direction:column; overflow:hidden; border-left:var(--border-line); font-family:var(--font-ui); }
+  .controls-body { flex:1; min-height:0; overflow:auto; padding:8px 12px 12px; }
+  .controls-tools { display:flex; flex-wrap:wrap; gap:5px; padding:0 0 6px; }
+  .controls h3 { margin:0 0 3px; padding:6px 0 3px; border-top:var(--border-line); font-size:.93em; }
+  .controls section:first-of-type h3 { border-top:0; padding-top:0; }
+  .show-control { display:grid; grid-template-columns:minmax(5.4em,auto) minmax(28px,1fr) 3.2em; align-items:center; column-gap:5px; row-gap:1px; padding:3px 0; }
+  .show-control label { white-space:nowrap; }
+  .show-control input { min-width:0; width:100%; margin:0; }
+  .show-control output { justify-self:end; text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+  .show-control small { grid-column:1/-1; font-size:.84em; line-height:1.18; }
+  .deck { grid-column:1/-1; background:var(--color-surface); border-top:var(--border-line); font-family:var(--font-ui); }
+  .transport { display:flex; align-items:center; flex-wrap:wrap; gap:6px; padding:7px 10px; }
+  .transport label { margin-right:2px; }
+  .transport .status { flex:1 1 8em; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.9em; }
+  .transport .meters { display:flex; margin:0 2px; align-items:center; gap:5px; }
+  .meters span { display:flex; align-items:center; gap:2px; font-size:.82em; }
+  .meters i { height:14px; display:block; width:3px; background:currentColor; transform-origin:center bottom; transform:scaleY(.08); }
+  .band-row { display:grid; grid-template-columns:minmax(5.4em,auto) minmax(0,1fr); align-items:center; column-gap:5px; row-gap:1px; padding:3px 0; }
+  .band-row select { min-width:0; width:100%; }
+  .band-row small { grid-column:2; font-size:.84em; line-height:1.18; min-height:1.18em; }
+  .recorder { padding:6px 0 2px; }
+  .recorder p { margin:0 0 4px; font-size:.9em; line-height:1.25; }
+  .recorder-tools { display:flex; flex-wrap:wrap; align-items:center; gap:5px; }
+  .stall [hidden] { display:none; }
+  @media (max-width:650px) {
+    .stall { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(120px,1fr) minmax(0,38%) auto; }
+    .controls { border-left:0; border-top:var(--border-line); }
+    .show-groups { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 12px; }
+    .transport { gap:4px; padding:5px; }
+    .transport .status { order:2; flex-basis:100%; }
+  }
+</style>
+<div class="stall">
+  <div class="street">
+    <canvas tabindex="0" role="img" aria-label="A noodle cart on a rainy night: a striped awning, a paper lantern, a lit sign, a black cat on a crate and a folding table with stools. Drag to turn it, scroll to come closer, double-click to reset."></canvas>
+    <p class="loading" role="status">Setting up the stall…</p>
+    <p class="scene-error" role="alert" hidden></p>
+  </div>
+  <section class="controls" aria-label="Controls">
+    <div class="controls-body">
+      <div class="controls-tools">
+        <button data-view-reset title="Turn the stall back to the front">Reset view</button>
+        <button data-reset-show title="Put every control back where it started">Reset controls</button>
+      </div>
+      <div class="show-groups">
+        <section class="band" aria-label="Band">
+          <h3>Band</h3>
+          <div class="band-row"><label for="ns-plays-0">Lamps</label><select id="ns-plays-0" data-plays="lamps"></select><small data-doing="lamps"></small></div>
+          <div class="band-row"><label for="ns-plays-1">Colour</label><select id="ns-plays-1" data-plays="lighting"></select><small data-doing="lighting"></small></div>
+          <div class="band-row"><label for="ns-plays-2">Puddles</label><select id="ns-plays-2" data-plays="puddles"></select><small data-doing="puddles"></small></div>
+          <div class="band-row"><label for="ns-plays-3">Table</label><select id="ns-plays-3" data-plays="table"></select><small data-doing="table"></small></div>
+          <div class="band-row"><label for="ns-plays-4">On the table</label><select id="ns-plays-4" data-plays="table.bottle,table.glass,table.chopsticks"></select><small data-doing="table.bottle"></small></div>
+          <div class="band-row"><label for="ns-plays-5">Cat</label><select id="ns-plays-5" data-plays="cat"></select><small data-doing="cat"></small></div>
+          <div class="band-row"><label for="ns-plays-6">Sign</label><select id="ns-plays-6" data-plays="sign"></select><small data-doing="sign"></small></div>
+          <div class="band-row"><label for="ns-plays-7">Bulbs</label><select id="ns-plays-7" data-plays="bulbs"></select><small data-doing="bulbs"></small></div>
+          <div class="band-row"><label for="ns-plays-8">Steam</label><select id="ns-plays-8" data-plays="steam"></select><small data-doing="steam"></small></div>
+          <div class="band-row"><label for="ns-plays-9">Bubbles</label><select id="ns-plays-9" data-plays="bubbles"></select><small data-doing="bubbles"></small></div>
+          <div class="band-row"><label for="ns-plays-10">Wind</label><select id="ns-plays-10" data-plays="weather"></select><small data-doing="weather"></small></div>
+          <div class="recorder" data-recorder hidden>
+            <p data-recording role="status"></p>
+            <div class="recorder-tools">
+              <button data-tap>Tap</button>
+              <input type="checkbox" id="ns-snap" data-snap checked><label for="ns-snap">Snap to 16ths</label>
+              <button data-stop>Save track</button>
+              <button data-cancel>Cancel</button>
+            </div>
+          </div>
+        </section>
+        <section aria-label="Timing">
+          <h3>Timing</h3>
+          <div class="show-control">
+            <label for="ns-sync">Sync</label>
+            <input type="range" id="ns-sync" data-sync min="-150" max="150" step="5" value="{{sync}}" aria-valuetext="{{syncReadout}}" aria-describedby="ns-note-sync">
+            <output for="ns-sync">{{syncReadout}}</output>
+            <small id="ns-note-sync">Move the picture earlier (+) or later (−) to match your speakers or headphones</small>
+          </div>
+        </section>
+        <section aria-label="Lighting">
+          <h3>Lighting</h3>
+          <div class="show-control" s-each="lightingControls as ch">
+            <label for="ns-light-{{ch.key}}">{{ch.label}}</label>
+            <input type="range" id="ns-light-{{ch.key}}" data-lighting="{{ch.key}}" min="0" max="1" step="0.01" value="{{ch.value}}" aria-valuetext="{{ch.readout}}" aria-describedby="ns-light-note-{{ch.key}}">
+            <output for="ns-light-{{ch.key}}">{{ch.readout}}</output>
+            <small id="ns-light-note-{{ch.key}}">{{ch.note}}</small>
+          </div>
+        </section>
+        <section s-each="sections as group" aria-label="{{group.name}}">
+          <h3>{{group.name}}</h3>
+          <div class="show-control" s-each="group.channels as ch">
+            <label for="ns-show-{{ch.key}}">{{ch.label}}</label>
+            <input type="range" id="ns-show-{{ch.key}}" data-show="{{ch.key}}" min="0" max="1" step="0.01" value="{{ch.value}}" aria-valuetext="{{ch.readout}}" aria-describedby="ns-note-{{ch.key}}">
+            <output for="ns-show-{{ch.key}}">{{ch.readout}}</output>
+            <small id="ns-note-{{ch.key}}">{{ch.note}}</small>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+  <div class="deck">
+    <div class="transport">
+      <label for="ns-input">Input</label>
+      <select id="ns-input">
+        <option value="midi">MIDI player</option>
+        <option value="file">Audio file</option>
+        <option value="radio">Radio</option>
+        <option value="microphone">Microphone</option>
+        <option value="program">External cues</option>
+      </select>
+      <select id="ns-song" aria-label="Song">
+        <option value="night-market">Night Market</option>
+        <option value="load">MIDI file…</option>
+      </select>
+      <input type="file" data-audio-file accept="audio/*,.mp3,.m4a,.ogg,.flac,.aac,.wav,.aiff" hidden>
+      <input type="file" data-midi-file accept=".mid,.midi,audio/midi,audio/x-midi" hidden>
+      <button data-input-action hidden></button>
+      <button data-file-play hidden>Pause audio</button>
+      <span class="meters" role="group" aria-label="What the scene is hearing">
+        <span title="Kick: the table hops, the lamps flash and their haze ducks, the puddles ring"><i></i>Kick</span><span title="Snare: the cat nods"><i></i>Snare</span><span title="Hats: bubbles and rattle, as texture"><i></i>Hats</span><span title="Bass: the puddles stand in waves"><i></i>Bass</span><span title="Chords: the lamps' colour and glow"><i></i>Chords</span><span title="Lead: the bulbs play the melody"><i></i>Lead</span>
+      </span>
+      <span class="status" role="status"></span>
+      <select id="ns-pixels" aria-label="Pixel size" title="Fine draws four times the art pixels (half their size each way)">
+        <option value="fine">Fine pixels</option>
+        <option value="classic">Classic pixels</option>
+      </select>
+      <button data-pause aria-pressed="false">Pause scene</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,308 @@
+{
+  "$schema": "/schemas/app-band.v2.schema.json",
+  "bandVersion": 2,
+  "role": "app",
+  "requires": {},
+  "desktop": false,
+  "sound": true,
+  "clock": false,
+  "chat": null,
+  "methods": {
+    "setShow": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "control",
+          "value"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "control": {
+            "enum": [
+              "sensitivity",
+              "table",
+              "cat",
+              "steam",
+              "bubbles",
+              "glow",
+              "color",
+              "puddle",
+              "sign",
+              "rain",
+              "wind",
+              "mist"
+            ]
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "description": "Set one control from 0 to 1: sensitivity; how much the music moves the table, cat, steam, bubbles, lamp glow, lamp color, puddles and sign; or the weather (rain, wind, mist)."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "resetShow": {
+      "inputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {},
+        "description": "Restore every control to its starting value."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "cue": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "bass",
+          "mid",
+          "treble",
+          "beat"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "bass": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "mid": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "treble": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "beat": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "description": "Set the four normalized input levels for windows listening to External cues."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "setSync": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "ms"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ms": {
+            "type": "integer",
+            "minimum": -150,
+            "maximum": 150
+          }
+        },
+        "description": "Shift the picture against the sound by whole milliseconds from \u2212150 to 150: positive draws each hit earlier, for speakers or headphones that play late."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "setLighting": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "control",
+          "value"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "control": {
+            "enum": [
+              "strength",
+              "fill",
+              "reach",
+              "softness",
+              "ambient",
+              "snap"
+            ]
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "description": "Tune the live lighting model from 0 to 1: strength (how strongly the lamps' changing light shows on what it lights), fill (extra lamplight beyond what was baked), reach (how far it carries), softness (how far it wraps round surfaces), ambient (everything else), snap (0 smooth dithered colour, 1 the scene's own palette only)."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "setLink": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "performer",
+          "link"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "performer": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "link": {
+            "type": "string",
+            "maxLength": 120
+          }
+        },
+        "description": "Link a performer (lamps, lighting, puddles, table, table.bottle, table.glass, table.chopsticks, cat, sign, bulbs, steam, bubbles, weather) to what it plays: a lane of the song (lane:kick, lane:snare, lane:hat, lane:open, lane:crash, lane:tom, lane:low, lane:bass, lane:pad, lane:keys, lane:lead, lane:part:<track>:<channel>, lane:control:<track id>), the grid (grid:beat, grid:bar, grid:section), another performer (follow:<performer>), or free. An empty link restores its default."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "saveTrack": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "song",
+          "hits"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "song": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "hits": {
+            "type": "array",
+            "maxItems": 8000,
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "description": "Save a control track recorded against a song: its hits as a flat list of [seconds, velocity 0\u20131] pairs. Replaces a track with the same id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    },
+    "deleteTrack": {
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 40
+          }
+        },
+        "description": "Delete a recorded control track; performers linked to it go back to their defaults."
+      },
+      "outputSchema": {
+        "type": "object",
+        "required": [],
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "requires": {},
+      "secrets": {}
+    }
+  },
+  "permissions": {
+    "performance": [
+      "setShow",
+      "resetShow",
+      "cue",
+      "setSync",
+      "setLighting",
+      "setLink",
+      "saveTrack",
+      "deleteTrack"
+    ]
+  },
+  "network": [],
+  "limits": {
+    "maxModelTokens": -1,
+    "maxCostUsdMicros": -1,
+    "maxCalls": 1000000,
+    "maxConcurrentCalls": 4,
+    "maxRuntimeMs": 1000,
+    "maxInputBytes": 1048576,
+    "maxOutputBytes": 1048576,
+    "runtime": "isolate",
+    "memory": 67108864
+  },
+  "placement": false,
+  "inspection": false,
+  "bands": false,
+  "system": false,
+  "self": {
+    "denies": [],
+    "writes": [
+      "state",
+      "data"
+    ]
+  },
+  "models": [
+    "*"
+  ]
+}

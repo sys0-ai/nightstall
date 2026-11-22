@@ -1,0 +1,13 @@
+{
+  "name": "nightstall",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun standalone/serve.ts",
+    "build": "bun standalone/build.ts",
+    "bake": "bun app/art/build.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

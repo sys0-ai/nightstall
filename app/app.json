@@ -1,0 +1,310 @@
+{
+  "design": "artwork",
+  "id": "night-stall",
+  "name": "Night Stall",
+  "version": "0.4.0",
+  "description": "A pixel-art noodle cart on a rainy night played like an animatronic band. Each thing in it (lamps, puddles, table, cat, sign, bulbs, steam, bubbles, weather) is a performer you can link to a track of the song, to the beat, bar or section, to another performer, or to a control track you record by tapping along, or leave free. A built-in MIDI player, MIDI files and pre-analysed audio files give it the whole score in advance; Radio, a microphone, a DAW through the sys0 Bridge or external cues drive it live.",
+  "icon": "a red-and-cream striped awning over a teal noodle cart glowing orange in the rain",
+  "multiple": false,
+  "personal": true,
+  "initialSize": {
+    "w": 1120,
+    "h": 640
+  },
+  "audioInput": [
+    "radio",
+    "microphone"
+  ],
+  "state": {
+    "type": "object",
+    "required": [
+      "show",
+      "signal",
+      "sync",
+      "lighting",
+      "band",
+      "tracks"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "show": {
+        "type": "object",
+        "required": [
+          "sensitivity",
+          "table",
+          "cat",
+          "steam",
+          "bubbles",
+          "glow",
+          "color",
+          "puddle",
+          "sign",
+          "rain",
+          "wind",
+          "mist"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "sensitivity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "table": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "cat": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "steam": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "bubbles": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "glow": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "color": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "puddle": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "sign": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "rain": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "wind": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "mist": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "signal": {
+        "type": "object",
+        "required": [
+          "bass",
+          "mid",
+          "treble",
+          "beat"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "bass": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "mid": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "treble": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "beat": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "sync": {
+        "type": "integer",
+        "minimum": -150,
+        "maximum": 150
+      },
+      "lighting": {
+        "type": "object",
+        "required": [
+          "strength",
+          "fill",
+          "reach",
+          "softness",
+          "ambient",
+          "snap"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "strength": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "fill": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "reach": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "softness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "ambient": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "snap": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "band": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "maxProperties": 64
+      },
+      "tracks": {
+        "type": "array",
+        "maxItems": 64,
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "song",
+            "hits"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "song": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "hits": {
+              "type": "array",
+              "maxItems": 8000,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "type": "object",
+    "required": [],
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "init": {
+    "state": {
+      "show": {
+        "sensitivity": 0.65,
+        "table": 0.6,
+        "cat": 0.7,
+        "steam": 0.6,
+        "bubbles": 0.6,
+        "glow": 0.6,
+        "color": 0.35,
+        "puddle": 0.6,
+        "sign": 0.5,
+        "rain": 0.6,
+        "wind": 0.4,
+        "mist": 0.5
+      },
+      "signal": {
+        "bass": 0,
+        "mid": 0,
+        "treble": 0,
+        "beat": 0
+      },
+      "sync": 0,
+      "lighting": {
+        "strength": 0.5,
+        "fill": 0.25,
+        "reach": 0.5,
+        "softness": 0.5,
+        "ambient": 0.5,
+        "snap": 0.6
+      },
+      "band": {},
+      "tracks": []
+    },
+    "data": {}
+  },
+  "vars": {},
+  "menu": [
+    {
+      "title": "Night Stall",
+      "items": [
+        {
+          "label": "About Night Stall",
+          "action": "about"
+        },
+        {
+          "label": "Settings",
+          "action": "settings"
+        },
+        {
+          "separator": true
+        },
+        {
+          "label": "Quit",
+          "action": "quit"
+        }
+      ]
+    }
+  ],
+  "views": {
+    "main": {
+      "kind": "html",
+      "template": "views/main.html",
+      "script": "views/main.ts"
+    }
+  },
+  "components": {},
+  "exposes": {}
+}
